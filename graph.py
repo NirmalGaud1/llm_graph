@@ -1,20 +1,20 @@
 import torch
-from transformers import AutoProcessor, Gemma3ForConditionalGeneration
+from transformers import AutoProcessor, AutoModelForCausalLM
 import streamlit as st
 from PIL import Image
 import requests
 from io import BytesIO
 
 # Set up the Streamlit app
-st.title("Gemma 3 Multimodal Chatbot")
+st.title("Multimodal Chatbot")
 st.write("Upload an image and ask a question about it!")
 
 # Load the model and processor
 @st.cache_resource
 def load_model():
-    model_name = "google/gemma-3-4b-it"  # Replace with the correct model name
+    model_name = "google/paligemma-3b-mix-224"  # Placeholder model
     processor = AutoProcessor.from_pretrained(model_name)
-    model = Gemma3ForConditionalGeneration.from_pretrained(model_name, torch_dtype=torch.bfloat16, device_map="auto")
+    model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16, device_map="auto")
     return processor, model
 
 processor, model = load_model()
@@ -51,7 +51,7 @@ if st.button("Generate Response"):
         ]
 
         # Process the input
-        inputs = processor.apply_chat_template(messages, add_generation_prompt=True, tokenize=True, return_tensors="pt").to(model.device)
+        inputs = processor(images=image, text=user_input, return_tensors="pt").to(model.device)
 
         # Generate text
         with torch.no_grad():
