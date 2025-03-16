@@ -1,31 +1,31 @@
 import streamlit as st
 import google.generativeai as genai
-from cot_reasoning import (
+from reasoning_libs.cot_reasoning import (
     VisualizationConfig,
     create_mermaid_diagram as create_cot_diagram,
     parse_cot_response
 )
-from tot_reasoning import (
+from reasoning_libs.tot_reasoning import (
     create_mermaid_diagram as create_tot_diagram,
     parse_tot_response
 )
-from l2m_reasoning import (
+from reasoning_libs.l2m_reasoning import (
     create_mermaid_diagram as create_l2m_diagram,
     parse_l2m_response
 )
-from selfconsistency_reasoning import (
+from reasoning_libs.selfconsistency_reasoning import (
     create_mermaid_diagram as create_scr_diagram,
     parse_scr_response
 )
-from selfrefine_reasoning import (
+from reasoning_libs.selfrefine_reasoning import (
     create_mermaid_diagram as create_srf_diagram,
     parse_selfrefine_response
 )
-from bs_reasoning import (
+from reasoning_libs.bs_reasoning import (
     create_mermaid_diagram as create_bs_diagram,
     parse_bs_response
 )
-from configs import config
+from reasoning_libs.configs import general as config
 import logging
 
 # Configure logging
@@ -50,9 +50,9 @@ with st.sidebar:
         options=["cot", "tot", "l2m", "scr", "srf", "bs"],
         index=0
     )
-    max_tokens = st.number_input("Max Tokens", value=config.general.max_tokens, min_value=1)
-    chars_per_line = st.number_input("Characters per Line", value=config.general.chars_per_line, min_value=1)
-    max_lines = st.number_input("Max Lines", value=config.general.max_lines, min_value=1)
+    max_tokens = st.number_input("Max Tokens", value=config.max_tokens, min_value=1)
+    chars_per_line = st.number_input("Characters per Line", value=config.chars_per_line, min_value=1)
+    max_lines = st.number_input("Max Lines", value=config.max_lines, min_value=1)
 
 # Main Input Section
 st.header("Input Your Query")
